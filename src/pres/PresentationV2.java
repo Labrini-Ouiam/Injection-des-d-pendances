@@ -1,6 +1,7 @@
 package pres;
 
 import dao.IDao;
+import metier.IMetier;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -10,6 +11,8 @@ public class PresentationV2 {
     public static void main(String[] args) {
         try {
             Scanner scanner=new Scanner(new File("config.txt"));
+            //DaoImplV2 d=new DaoImplV2();
+
             // Lit la première ligne du fichier, qui devrait contenir le nom de la classe DAO
             String daoClassname = scanner.nextLine();
 
@@ -19,8 +22,12 @@ public class PresentationV2 {
             // Crée une nouvelle instance de la classe chargée
             IDao dao = (IDao) cDao.getConstructor().newInstance();
 
-            // Appelle la méthode getData() sur l'instance de DAO et affiche le résultat
-            System.out.println(dao.getData());
+            //MetierImpl metier=new MetierImpl(d);
+            String metierClassname = scanner.nextLine();
+            Class cMetier = Class.forName(metierClassname);
+            IMetier metier = (IMetier) cDao.getConstructor(IDao.class).newInstance(dao);
+
+            System.out.println("RESULTAT="+metier.calcul());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
